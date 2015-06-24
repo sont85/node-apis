@@ -33,27 +33,25 @@ function responseHandler(req, res) {
     });
   } else if (req.url.substr(0,13) === "/gravatarUrl/"){
     res.writeHead(200, {"Content-Type": "text/plain"});
-    console.log(req.url.substr(13));
-    console.log(md5(req.url.substr(13)))
     res.end("Gravatar URL: http://www.gravatar.com/avatar/"+md5(req.url.substr(13)))
   } else if (req.url.substr(0,6) === "/Calc/") {
     res.writeHead(200, {"Content-Type": "text/plain"});
-    req.url = req.url.substr(6)
-    var arithmeticExpression = req.url 
-    var firstNumber = parseInt(req.url.match(/^\d+/))
-    var secondNumber = parseInt(req.url.match(/\d+$/))
+    req.url = req.url.substr(6);
+    var arithmeticExpression = req.url ;
+    var firstNumber = parseInt(req.url.match(/^\d+/));
+    var secondNumber = parseInt(req.url.match(/\d+$/));
     var answer = math[req.url.replace(/\d+/g, "")](firstNumber,secondNumber).toString()
-    res.end(arithmeticExpression +"= "+ answer)
+    res.end(arithmeticExpression +"= "+ answer);
   } else if (req.url.substr(0,8) === "/Counts/") {
     res.writeHead(200, {"Content-Type": "text/plain"});
-    req.url = decodeURI(req.url)
+    req.url = decodeURI(req.url);
     req.url = req.url.substr(8);
     console.log(req.url);
     var letterCount = req.url.match(/[A-z]/g).length;
     var spaceCount = req.url.match(/\s/g).length;
-    var wordCount = req.url.match(/\w+/g).length
-    var count = {"letterCount": letterCount, "spaceCount": spaceCount, "wordCount": wordCount}
-    res.end(JSON.stringify(count))
+    var wordCount = req.url.match(/\w+/g).length;
+    var count = {"letterCount": letterCount, "spaceCount": spaceCount, "wordCount": wordCount};
+    res.end(JSON.stringify(count));
   } else {
     res.writeHead(200, {"Content-Type": "text/plain"});
     request('http://points.agilelabs.com'+req.url+'.json', function (error, response, body) {
